@@ -7,29 +7,35 @@ class HeldKarp:
     def __init__(self, dist_matrix):
         self.dist = dist_matrix
         self.n = len(dist_matrix)
-        self.final_mask = (1 << self.n) - 1 
 
     def solve(self):
-        sys.setrecursionlimit(20000)
+        n = self.n
+        if n <= 1: return 0  
         
-        self._visit.cache_clear()
-        
-        return self._visit(1, 0)
+        dist = self.dist
+        dp = [[float('inf')] * n for _ in range((1 << n))]
+        dp[1][0] = 0
 
-    @lru_cache(maxsize=None)
-    def _visit(self, mask, pos):
-        if mask == self.final_mask:
-            return self.dist[pos][0]
+        for mask in range(1, (1 << n)):
+            if not (mask & 1): continue 
 
-        ans = float('inf')
+            for i in range(1, n):
+                if (mask & (1 << i)):
+                    prev_mask = mask ^ (1 << i)
+                    for k in range(n): 
+                        if (prev_mask & (1 << k)):
+                            new_cost = dp[prev_mask][k] + dist[k][i]
+                            if new_cost < dp[mask][i]:
+                                dp[mask][i] = new_cost
 
-        for city in range(self.n):
-            if (mask & (1 << city)) == 0: 
-                new_ans = self.dist[pos][city] + self._visit(mask | (1 << city), city)
-                ans = min(ans, new_ans)
-        
-        return ans
-
+        fullmask = (1 << n) - 1
+        min_cost = float('inf')
+        for i in range(1, n):
+            cost = dp[fullmask][i] + dist[i][0]
+            if cost < min_cost:
+                min_cost = cost
+        return min_cost
+    
 class GRASP:
     def __init__(self, dist_matrix, max_iterations=50, alpha=0.3):
         self.dist = dist_matrix
