@@ -15,7 +15,7 @@ def matriz(n, seed=42):
     return dist_matriz
 
 N_INICIAL = 1
-N_FINAL = 16
+N_FINAL = 20
 GRASP_RUNS = 20
 
 resultados = {
