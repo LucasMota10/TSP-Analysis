@@ -1,6 +1,9 @@
 # TSP-Analysis
-Implementation of Held-Karp and GRASP for the Travel Salesman problem (TSP)
+Implementation of the Held-Karp algorithm and the GRASP heuristic for the Traveling Salesman Problem (TSP)
 
-to execute the code, type in the terminal:
+## To execute the code, follow the instructions below:
 
+1. Install numpy, pandas and matplotlib
+`pip install numpy pandas matplotlib`
+2. Run the main.py file
 `python3 main.py`
